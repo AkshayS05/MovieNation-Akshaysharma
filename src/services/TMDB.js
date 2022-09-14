@@ -20,7 +20,7 @@ export const tmdbApi = createApi({
     // creating an end point
     getMovies: builder.query({
       // now we will slipt as per the query
-      query: ({ genreIdOrCategoryName, page }) => {
+      query: ({ genreIdOrCategoryName, page, searchQuery }) => {
         // popular, top_rated, upcoming--> ** Get Movies by categories **..
 
         if (
@@ -35,6 +35,10 @@ export const tmdbApi = createApi({
           typeof genreIdOrCategoryName === 'number'
         ) {
           return `discover/movie?with_genres=${genreIdOrCategoryName}&page=${page}&api_key=${tmdbApiKey}`;
+        }
+        // using SearchQuery--*Get movies by search
+        if (searchQuery) {
+          return `/search/movie?query=${searchQuery}&page=${page}&api_key=${tmdbApiKey}`;
         }
         // ** get popular movies
         return `movie/popular?page=${page}&api_key=${tmdbApiKey}`;

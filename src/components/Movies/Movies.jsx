@@ -14,13 +14,14 @@ import { MovieList } from '..';
 import { selectGenreOrCategory } from '../../features/CurrentGenreorCategory';
 function Movies() {
   const [page, setPage] = useState(1);
-  // redux provides us other properties including isFetching, error
-  const { genreIdOrCategoryName } = useSelector(
+  const { genreIdOrCategoryName, searchQuery } = useSelector(
     (state) => state.CurrentGenreorCategory,
   );
+  // redux provides us other properties including isFetching, error
   const { data, error, isFetching } = useGetMoviesQuery({
     genreIdOrCategoryName,
     page,
+    searchQuery,
   });
   if (isFetching) {
     return (
