@@ -12,12 +12,35 @@ export const tmdbApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.themoviedb.org/3' }),
   //   specific end points where you want to make a call.
   endpoints: (builder) => ({
-    // Get Movies by [Type]
+    // ****get Genres***//
+    getGenres: builder.query({
+      query: () => `genre/movie/list?api_key=${tmdbApiKey}&language=en-US`,
+    }),
+    // ***Get Movies by [Type]***//
     // creating an end point
     getMovies: builder.query({
-      query: () => `movie/popular?page=${page}&api_key=${tmdbApiKey}`,
+      // now we will slipt as per the query
+      query: ({ genreIdOrCategoryName, page }) => {
+        // popular, top_rated, upcoming--> ** Get Movies by categories **..
+
+        if (
+          genreIdOrCategoryName &&
+          typeof genreIdOrCategoryName === 'string'
+        ) {
+          return `movie/${genreIdOrCategoryName}?page=${page}&api_key=${tmdbApiKey}`;
+        }
+        // 12, 15 16....---> **Get Movies by Genre**
+        if (
+          genreIdOrCategoryName &&
+          typeof genreIdOrCategoryName === 'number'
+        ) {
+          return `discover/movie?with_genres=${genreIdOrCategoryName}&page=${page}&api_key=${tmdbApiKey}`;
+        }
+        // ** get popular movies
+        return `movie/popular?page=${page}&api_key=${tmdbApiKey}`;
+      },
     }),
   }),
 });
 //as we ahve created a query that is "getMovies" inside createApi-->redux toolkit has automatically created a hook for us called useGetMoviesQuery
-export const { useGetMoviesQuery } = tmdbApi;
+export const { useGetMoviesQuery, useGetGenresQuery } = tmdbApi;

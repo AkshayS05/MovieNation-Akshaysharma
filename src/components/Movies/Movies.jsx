@@ -11,11 +11,17 @@ import { useSelector } from 'react-redux';
 import { useGetMoviesQuery } from '../../services/TMDB';
 import { Movie } from '@mui/icons-material';
 import { MovieList } from '..';
-
+import { selectGenreOrCategory } from '../../features/CurrentGenreorCategory';
 function Movies() {
+  const [page, setPage] = useState(1);
   // redux provides us other properties including isFetching, error
-  const { data, error, isFetching } = useGetMoviesQuery();
-  console.log(data);
+  const { genreIdOrCategoryName } = useSelector(
+    (state) => state.CurrentGenreorCategory,
+  );
+  const { data, error, isFetching } = useGetMoviesQuery({
+    genreIdOrCategoryName,
+    page,
+  });
   if (isFetching) {
     return (
       <Box display="flex" justifyContent="center">
