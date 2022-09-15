@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser, userSelector } from '../../features/auth';
 import {
   AppBar,
   Button,
@@ -20,10 +22,15 @@ import {
 
 import { Link } from 'react-router-dom';
 import { Search } from '..';
+import { fetchToken, createSessionId, moviesApi } from '../../utils';
 import { Sidebar } from '..';
 //styles file
 import useStyles from './styles';
+
 function NavBar() {
+  // const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector(userSelector);
+
   // css usage hook
   const classes = useStyles();
   const theme = useTheme();
@@ -34,7 +41,37 @@ function NavBar() {
   // anything above 600px is not mobile
 
   const isMobile = useMediaQuery('(max-width:600px)');
-  const isAuthenticated = true;
+
+  //get the token as well as session id
+  const token = localStorage.getItem('request_token');
+  const sessionIdFromLocalStorage = localStorage.getItem('session_id');
+  const dispatch = useDispatch();
+  console.log(user);
+  //useEffect hook which will trigger ones the token is changed
+  useEffect(() => {
+    // get the user data
+    const logInUser = async () => {
+      if (token) {
+        if (sessionIdFromLocalStorage) {
+          console.log(1);
+          // function call where we will get back our user data.
+          const { data: userData } = await moviesApi.get(
+            `/account?session_id=${sessionIdFromLocalStorage}`,
+          );
+          dispatch(setUser(userData));
+        } else {
+          // create the session id which will be handled by the function in the fetch token
+          const sessionId = await createSessionId();
+          //ones created if not already we can call the same url
+          const { data: userData } = await moviesApi.get;
+          `/account?session_id=${sessionId}`;
+          dispatch(setUser(userData));
+        }
+        // after the session has been created.Now, we need to disoatch this data to the redux in order to maintain/store this state.--auth.js
+      }
+    };
+    logInUser();
+  }, [token]);
 
   return (
     <>
@@ -61,7 +98,7 @@ function NavBar() {
           {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
-              <Button color="inherit" onClick={() => {}}>
+              <Button color="inherit" onClick={fetchToken}>
                 {/* &nsp is a space sign */}
                 Login &nbsp; <AccountCircle />
               </Button>
@@ -69,7 +106,7 @@ function NavBar() {
               <Button
                 color="inherit"
                 component={Link}
-                to="/profile/:id"
+                to={`/profile/${user.id}`}
                 className={classes.linkButton}
                 onClick={() => {}}
               >
