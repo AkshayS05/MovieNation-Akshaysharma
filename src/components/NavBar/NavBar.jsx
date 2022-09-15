@@ -53,7 +53,6 @@ function NavBar() {
     const logInUser = async () => {
       if (token) {
         if (sessionIdFromLocalStorage) {
-          console.log(1);
           // function call where we will get back our user data.
           const { data: userData } = await moviesApi.get(
             `/account?session_id=${sessionIdFromLocalStorage}`,
