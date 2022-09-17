@@ -58,7 +58,6 @@ const Sidebar = ({ SetMobileOpen }) => {
     'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
 
   const { data, isFetching } = useGetGenresQuery();
-  console.log(data);
 
   // this will alow us to dispatch action-- transfer specific data from our component to our redux
   const dispatch = useDispatch();
