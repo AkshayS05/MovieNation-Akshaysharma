@@ -1,10 +1,16 @@
 import { makeStyles } from '@mui/styles';
 
-export default makeStyles(() => ({
+export default makeStyles((theme) => ({
   root: {
     display: 'flex',
     height: '100%',
-    marginLeft: '12rem',
+    marginLeft: '15rem',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '20rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '0rem',
+    },
   },
   toolbar: {
     height: '70px',
