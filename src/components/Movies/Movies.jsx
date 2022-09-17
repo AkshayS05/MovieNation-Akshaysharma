@@ -10,10 +10,16 @@ import {
 import { useSelector } from 'react-redux';
 import { useGetMoviesQuery } from '../../services/TMDB';
 import { Movie } from '@mui/icons-material';
-import { MovieList } from '..';
+import { MovieList, Pagination } from '..';
 import { selectGenreOrCategory } from '../../features/CurrentGenreorCategory';
+
 function Movies() {
+  // this is for pagination
   const [page, setPage] = useState(1);
+
+  //this hook is use to identify if we are on a specific screen size and can add a breakpoint accordingly.
+  const lg = useMediaQuery((theme) => theme.breakpoints.only('lg'));
+  const numberOfMovies = lg ? 16 : 18;
   const { genreIdOrCategoryName, searchQuery } = useSelector(
     (state) => state.CurrentGenreorCategory,
   );
@@ -44,7 +50,12 @@ function Movies() {
   if (error) return 'An error has occured!';
   return (
     <div>
-      <MovieList movies={data} />
+      <MovieList movies={data} numberOfMovies={numberOfMovies} />
+      <Pagination
+        currentPage={page}
+        setPage={setPage}
+        totalPages={data.total_pages}
+      />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import useStyles from './styles';
 
 const Movie = ({ movie, i }) => {
   const classes = useStyles();
-  console.log(movie, i);
+
   return (
     // for instance on medium devices we can fit three images, thus 3 *4=12
     // on extra small screens we want this particular movie to take 12 spaces to display

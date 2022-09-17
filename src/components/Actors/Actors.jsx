@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useHistory } from 'react-router-dom';
 // use useParams from react router dom to get the actors' id
 // make a new call using redux toolkit query--> get actors detail call....
@@ -22,12 +22,12 @@ import {
 // styles
 import useStyles from './styles';
 import { ArrowBack } from '@mui/icons-material';
-import { MovieList } from '..';
+import { MovieList, Pagination } from '..';
 function Actors() {
   const classes = useStyles();
   const id = useParams();
   const history = useHistory();
-  const page = 1;
+  const [page, setPage] = useState(1);
   const { data, isFetching, error } = useGetActorDetailsQuery({
     person_id: id.id,
   });
@@ -107,10 +107,17 @@ function Actors() {
         </Box>
       </Grid>
       <Box marginTop="2rem 0" width="100%">
-        <Typography variant="h2" align="Center" gutterBottoms>
+        <Typography variant="h2" align="center" gutterBottom>
           Movies
         </Typography>
         {movies && <MovieList movies={movies} numberOfMovies={12} />}
+        {
+          <Pagination
+            currentPage={page}
+            setPage={setPage}
+            totalPages={movies?.total_pages}
+          />
+        }
       </Box>
     </Grid>
   );
