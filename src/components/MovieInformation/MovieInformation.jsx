@@ -23,19 +23,27 @@ import {
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { useGetMovieQuery } from '../../services/TMDB';
+import {
+  useGetMovieQuery,
+  useGetRecommendationsQuery,
+} from '../../services/TMDB';
 // styles
 import useStyles from './styles';
 import genreIcons from '../../assets/genres';
 import { useGetGenresQuery } from '../../services/TMDB';
+import { MovieList } from '..';
 function MovieInformation() {
   const classes = useStyles();
   const { id } = useParams();
   // passing id as a parameter in order to get details about a specific movie to our tmdb
   const { data, isFetching, error } = useGetMovieQuery(id);
+  // we need to send object with two different properties to useGetRecommendationsQuery
+  const { data: RecommendationsData, isFetching: isRecommendationsFecting } =
+    useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
   const dispatch = useDispatch();
   const addToFavorites = () => {};
   const addToWatchList = () => {};
+  console.log(RecommendationsData);
   const isMovieFavorited = true;
   const isMovieWatchlisted = true;
   if (isFetching) {
@@ -219,6 +227,18 @@ function MovieInformation() {
           </div>
         </Grid>
       </Grid>
+      {/* movie recommendations */}
+      <Box marginTop="5rem" width="100%">
+        <Typography variant="h3" gutterBottom align="center">
+          You might also like
+        </Typography>
+        {/* loop through the recommended movies  from redux*/}
+        {RecommendationsData ? (
+          <MovieList movies={RecommendationsData} numberOfMovies={12} />
+        ) : (
+          <Box>Sorry nothing was found ☹</Box>
+        )}
+      </Box>
     </Grid>
   );
 }
