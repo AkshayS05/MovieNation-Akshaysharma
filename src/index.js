@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import App from './components/App';
+import './index.css';
 // to use theme
 const theme = createTheme({});
 //to use redux

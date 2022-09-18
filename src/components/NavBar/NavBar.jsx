@@ -27,7 +27,7 @@ import { Sidebar } from '..';
 //styles file
 import useStyles from './styles';
 
-function NavBar() {
+const NavBar = () => {
   // const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { isAuthenticated, user } = useSelector(userSelector);
 
@@ -123,11 +123,11 @@ function NavBar() {
         </Toolbar>
       </AppBar>
       <div>
-        <nav className="classes.drawer">
+        <nav className={classes.drawer}>
           {isMobile ? (
             <Drawer
               variant="temporary"
-              anchor="left"
+              anchor="right"
               open={mobileOpen}
               onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
               // when you want to overwrite the underline pieces of components, you use classes.paper
@@ -150,6 +150,6 @@ function NavBar() {
       </div>
     </>
   );
-}
+};
 
 export default NavBar;
