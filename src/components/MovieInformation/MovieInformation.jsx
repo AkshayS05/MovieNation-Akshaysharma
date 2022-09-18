@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Typography,
@@ -30,22 +30,67 @@ import {
 // styles
 import useStyles from './styles';
 import genreIcons from '../../assets/genres';
-import { useGetGenresQuery } from '../../services/TMDB';
+import { useGetGenresQuery, useGetListQuery } from '../../services/TMDB';
 import { MovieList } from '..';
+import { userSelector } from '../../features/auth';
 function MovieInformation() {
   const classes = useStyles();
+  const { user } = useSelector(userSelector);
   const { id } = useParams();
   // passing id as a parameter in order to get details about a specific movie to our tmdb
+  const { data: favoriteMovies } = useGetListQuery({
+    listName: 'favorite/movies',
+    sessionId: localStorage.getItem('session_id'),
+    accountId: user.id,
+    page: 1,
+  });
+  const { data: watchlistMovies } = useGetListQuery({
+    listName: 'watchlist/movies',
+    sessionId: localStorage.getItem('session_id'),
+    accountId: user.id,
+    page: 1,
+  });
   const { data, isFetching, error } = useGetMovieQuery(id);
   // we need to send object with two different properties to useGetRecommendationsQuery
   const { data: RecommendationsData, isFetching: isRecommendationsFecting } =
     useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
   const dispatch = useDispatch();
-  const addToFavorites = () => {};
-  const addToWatchList = () => {};
+  // here we are going to call api directly instead of using redux.
+  //The reason being we do not want to have a global state hook using redux, instead we need to have a call within function which we are not allowed to do in redux toolkit
+  const [isMovieFavorited, setIsMovieFavorited] = useState(false);
+  const [isMovieWatchlisted, setIsMovieWatchlisted] = useState(false);
 
-  const isMovieFavorited = true;
-  const isMovieWatchlisted = true;
+  // !!--> object that is {} is true thus we make it false by !{}= false and then !!{}--> true
+  // useEffect hook which will check if movies are also in favorite movies of the user
+  useEffect(() => {
+    setIsMovieFavorited(
+      !!favoriteMovies?.resuls?.find((movie) => movie?.id === data?.id),
+    );
+  }, [favoriteMovies, data]);
+  useEffect(() => {
+    setIsMovieWatchlisted(
+      !!watchlistMovies?.resuls?.find((movie) => movie?.id === data?.id),
+    );
+  }, [watchlistMovies, data]);
+  const addToFavorites = async () => {
+    await axios.post(
+      `https://api.themoviedb.org/3/account/${user.id}/favorite?api_key=${
+        process.env.REACT_APP_TMDB_KEY
+      }&session_id=${localStorage.getItem('session_id')}`,
+      { media_type: 'movie', media_id: id, favorite: !isMovieFavorited },
+    );
+    setIsMovieFavorited((prev) => !prev);
+  };
+  const addToWatchList = async () => {
+    await axios.post(
+      `https://api.themoviedb.org/3/account/${user.id}/watchlist?api_key=${
+        process.env.REACT_APP_TMDB_KEY
+      }&session_id=${localStorage.getItem('session_id')}`,
+      { media_type: 'movie', media_id: id, watchlist: !isMovieWatchlisted },
+    );
+    setIsMovieWatchlisted((prev) => !prev);
+  };
+
   const [open, setOpen] = useState(false);
   if (isFetching) {
     return (
