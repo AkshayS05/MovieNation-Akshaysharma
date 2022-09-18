@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ColorModeContext } from '../../utils/ToggleColorMode';
 import { setUser, userSelector } from '../../features/auth';
 import {
   AppBar,
@@ -46,7 +47,7 @@ const NavBar = () => {
   const token = localStorage.getItem('request_token');
   const sessionIdFromLocalStorage = localStorage.getItem('session_id');
   const dispatch = useDispatch();
-  console.log(user);
+  const colorMode = useContext(ColorModeContext);
   //useEffect hook which will trigger ones the token is changed
   useEffect(() => {
     // get the user data
@@ -89,8 +90,12 @@ const NavBar = () => {
             </IconButton>
           )}
           {/* sx== providing inline styles */}
-          <IconButton color="inherit" sx={{ ml: 1 }} onClick={() => {}}>
-            {/* to make it work use useTheme from mui  */}
+          {/* to make it work use useTheme from mui  */}
+          <IconButton
+            color="inherit"
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+          >
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
           {/* if not mobile then render search component */}
