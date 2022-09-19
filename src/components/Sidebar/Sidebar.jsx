@@ -22,7 +22,7 @@ import genreIcons from '../../assets/genres';
 import { ClassNames } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGenreOrCategory } from '../../features/CurrentGenreorCategory';
-const Sidebar = ({ SetMobileOpen }) => {
+const Sidebar = ({ setMobileOpen }) => {
   //access to specific theme variables
   const theme = useTheme();
   // to use styles
@@ -66,6 +66,10 @@ const Sidebar = ({ SetMobileOpen }) => {
     (state) => state.CurrentGenreorCategory,
   );
 
+  //to close the sidebar
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [genreIdOrCategoryName]);
   return (
     <>
       {/* link going to the home */}

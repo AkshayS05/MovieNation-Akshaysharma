@@ -25,7 +25,6 @@ const Movie = ({ movie, i }) => {
                 : 'https://www.fillmurray.com/200/300'
             }
           />
-
           {/* { :<img alt={movie.title} className{classes.image} src="https://www.fillmurray.com/200/300"/>} } */}
 
           {/* above we can see a repetition of image tags, thus instead of using ternary operations on the whole, use it on the link and change it according to the condition */}

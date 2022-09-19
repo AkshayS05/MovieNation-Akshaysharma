@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CssBaseline } from '@mui/material';
 import { Route, Switch } from 'react-router-dom';
 import useStyles from './styles';
 import { Actors, Movies, MovieInformation, Profile, NavBar } from './';
-
+import useAlan from './Alan';
 const App = () => {
   const classes = useStyles();
   // this is a style hook
+  // attaching to the dom
+  const alanBtnContainer = useRef();
+  useAlan();
   {
     /* as we want navbar to be visible all the time we will use it before the switch which can only show one component at a time. */
   }
@@ -31,6 +34,7 @@ const App = () => {
           </Route>
         </Switch>
       </main>
+      <div ref={alanBtnContainer} />
     </div>
   );
 };
