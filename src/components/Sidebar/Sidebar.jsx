@@ -22,6 +22,10 @@ import genreIcons from '../../assets/genres';
 import { ClassNames } from '@emotion/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGenreOrCategory } from '../../features/CurrentGenreorCategory';
+
+// images
+import logo from '../../assets/images/MovieNation.png';
+import logo2 from '../../assets/images/MovieNationdark.png';
 const Sidebar = ({ setMobileOpen }) => {
   //access to specific theme variables
   const theme = useTheme();
@@ -51,11 +55,9 @@ const Sidebar = ({ setMobileOpen }) => {
     { label: 'Horror', value: 'horror' },
   ];
 
-  const redLogo =
-    'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
+  const redLogo =logo2;
 
-  const blueLogo =
-    'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+  const blueLogo =logo;
 
   const { data, isFetching } = useGetGenresQuery();
 
@@ -77,8 +79,8 @@ const Sidebar = ({ setMobileOpen }) => {
         {/* here we will show an image depending upon the theme chosen */}
         <img
           className={classes.image}
-          src={theme.palette.mode === 'light' ? redLogo : blueLogo}
-          alt="filmpire logo"
+          src={theme.palette.mode === 'light' ? blueLogo : redLogo}
+          alt="MoviesNation logo"
         />
       </Link>
       <Divider />
