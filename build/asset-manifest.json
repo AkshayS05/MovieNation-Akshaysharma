@@ -1,13 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.6d4e09db.css",
-    "main.js": "/static/js/main.3b4970e2.js",
+    "main.js": "/static/js/main.88209e51.js",
+    "static/media/MovieNationdark.png": "/static/media/MovieNationdark.e452f823ec4e07ddd174.png",
+    "static/media/MovieNation.png": "/static/media/MovieNation.6c455b0b71310fa46753.png",
     "index.html": "/index.html",
     "main.6d4e09db.css.map": "/static/css/main.6d4e09db.css.map",
-    "main.3b4970e2.js.map": "/static/js/main.3b4970e2.js.map"
+    "main.88209e51.js.map": "/static/js/main.88209e51.js.map"
   },
   "entrypoints": [
     "static/css/main.6d4e09db.css",
-    "static/js/main.3b4970e2.js"
+    "static/js/main.88209e51.js"
   ]
 }
